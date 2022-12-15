@@ -139,6 +139,34 @@ templates:
       original_task: true
     name: the pronoun refers to
     reference: "Adapted from Perez et al. 2021 and Schick & Sch\xFCtz 2021."
+  98f3a843-a15e-46e6-8228-05bbd3cf5f2b: !Template
+    answer_choices: '{% set pronoun = tokens[coreference_clusters[2] | int : coreference_clusters[3]
+      | int + 1] | join(" ") %} {% if pronoun == "he" or pronoun == "she" %}     {%
+      set choices = ["he", "she"] %} {% elif pronoun == "hers" or pronoun == "his"
+      %}      {% set choices = ["his", "hers"] %} {% elif pronoun == "him" or pronoun
+      == "her" %}       {% set choices = ["him", "her"] %}     {% endif %}{% for entity
+      in choices[:-1] %} {{ entity }} ||| {% endfor %} {{ choices[-1] }}'
+    id: 98f3a843-a15e-46e6-8228-05bbd3cf5f2b
+    jinja: "{% set pronoun = tokens[coreference_clusters[2] | int : coreference_clusters[3]\
+      \ | int + 1] | join(\" \") %}\n{% set referent = tokens[coreference_clusters[0]\
+      \ | int : coreference_clusters[1] | int + 1] | join(\" \") %}\n{% if pronoun\
+      \ == \"he\" or pronoun == \"she\" %}\n    {% set choices = [\"he\", \"she\"\
+      ] %}\n{% elif pronoun == \"hers\" or pronoun == \"his\" %}\n     {% set choices\
+      \ = [\"his\", \"hers\"] %}\n{% elif pronoun == \"him\" or pronoun == \"her\"\
+      \ %}\n      {% set choices = [\"him\", \"her\"] %}    \n{% endif %}\n{% for\
+      \ tok in tokens %}{% if tok in choices %}{{ referent | lower}} {% else %}{{\
+      \ tok }} {% endif %}{% endfor %}\nIn this sentence, what can \"{{ referent |\
+      \ lower}}\" more likely be replaced by: \"{{ choices | join(\"\\\", or \\\"\"\
+      ) }}\"? ||| {{ pronoun }}"
+    metadata: !TemplateMetadata
+      choices_in_prompt: true
+      languages:
+      - en
+      metrics:
+      - Accuracy
+      original_task: false
+    name: multiple_choice
+    reference: ''
   e5ac51e8-beaf-4cf9-a7fe-20d8cc2b1d0a: !Template
     answer_choices: null
     id: e5ac51e8-beaf-4cf9-a7fe-20d8cc2b1d0a
